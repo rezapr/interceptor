@@ -33,7 +33,7 @@ func New(constructors ...Constructor) Chain {
 // (assuming every middleware calls the following one).
 //
 // A chain can be safely reused by calling Then() several times.
-//     stdStack := interceptors.New(ratelimitHandler, csrfHandler)
+//     stdStack := interceptor.New(ratelimitHandler, csrfHandler)
 //     indexPipe = stdStack.Then(indexHandler)
 //     authPipe = stdStack.Then(authHandler)
 // Note that constructors are called on every call to Then()
@@ -74,7 +74,7 @@ func (c Chain) ThenFunc(fn http.HandlerFunc) http.Handler {
 //
 // Append returns a new chain, leaving the original one untouched.
 //
-//     stdChain := interceptors.New(m1, m2)
+//     stdChain := interceptor.New(m1, m2)
 //     extChain := stdChain.Append(m3, m4)
 //     // requests in stdChain go m1 -> m2
 //     // requests in extChain go m1 -> m2 -> m3 -> m4
@@ -91,16 +91,16 @@ func (c Chain) Append(constructors ...Constructor) Chain {
 //
 // Extend returns a new chain, leaving the original one untouched.
 //
-//     stdChain := interceptors.New(m1, m2)
-//     ext1Chain := interceptors.New(m3, m4)
+//     stdChain := interceptor.New(m1, m2)
+//     ext1Chain := interceptor.New(m3, m4)
 //     ext2Chain := stdChain.Extend(ext1Chain)
 //     // requests in stdChain go  m1 -> m2
 //     // requests in ext1Chain go m3 -> m4
 //     // requests in ext2Chain go m1 -> m2 -> m3 -> m4
 //
 // Another example:
-//  aHtmlAfterNosurf := interceptors.New(m2)
-// 	aHtml := interceptors.New(m1, func(h http.Handler) http.Handler {
+//  aHtmlAfterNosurf := interceptor.New(m2)
+// 	aHtml := interceptor.New(m1, func(h http.Handler) http.Handler {
 // 		csrf := nosurf.New(h)
 // 		csrf.SetFailureHandler(aHtmlAfterNosurf.ThenFunc(csrfFail))
 // 		return csrf

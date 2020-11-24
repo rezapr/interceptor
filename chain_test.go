@@ -1,4 +1,4 @@
-// Package interceptors implements a middleware chaining solution.
+// Package interceptor implements a middleware chaining solution.
 package interceptor
 
 import (
