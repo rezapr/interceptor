@@ -1,5 +1,5 @@
 // Package interceptors implements a middleware chaining solution.
-package interceptors
+package interceptor
 
 import (
 	"net/http"

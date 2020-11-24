@@ -1,8 +1,8 @@
-# Interceptors 
+# Interceptor 
 
 fork from github.com/justinas/alice
 
-Interceptors provides a convenient way to chain 
+interceptor provides a convenient way to chain 
 your HTTP middleware functions and the app handler.
 
 In short, it transforms
@@ -14,14 +14,14 @@ Middleware1(Middleware2(Middleware3(App)))
 to
 
 ```go
-interceptors.New(Middleware1, Middleware2, Middleware3).Then(App)
+interceptor.New(Middleware1, Middleware2, Middleware3).Then(App)
 ```
 
 ### Why?
 
 None of the other middleware chaining solutions
-behaves exactly like Interceptors.
-Interceptors is as minimal as it gets:
+behaves exactly like interceptor.
+interceptor is as minimal as it gets:
 in essence, it's just a for loop that does the wrapping for you.
 
 
@@ -42,7 +42,7 @@ func myStripPrefix(h http.Handler) http.Handler {
 }
 ```
 
-This complete example shows the full power of Interceptors.
+This complete example shows the full power of interceptor.
 
 ```go
 package main
@@ -52,7 +52,7 @@ import (
     "time"
 
     "github.com/throttled/throttled"
-    "github.com/rezapr/interceptors"
+    "github.com/rezapr/interceptor"
     "github.com/justinas/nosurf"
 )
 
@@ -68,7 +68,7 @@ func main() {
     th := throttled.Interval(throttled.PerSec(10), 1, &throttled.VaryBy{Path: true}, 50)
     myHandler := http.HandlerFunc(myApp)
 
-    chain := interceptors.New(th.Throttle, timeoutHandler, nosurf.NewPure).Then(myHandler)
+    chain := interceptor.New(th.Throttle, timeoutHandler, nosurf.NewPure).Then(myHandler)
     http.ListenAndServe(":8000", chain)
 }
 ```
@@ -78,13 +78,13 @@ then an http.TimeoutHandler we've set up,
 then [nosurf](https://github.com/justinas/nosurf)
 and will finally reach our handler.
 
-Note that Interceptors makes **no guarantees** for
+Note that interceptor makes **no guarantees** for
 how one or another piece of  middleware will behave.
 Once it passes the execution to the outer layer of middleware,
 it has no saying in whether middleware will execute the inner handlers.
 This is intentional behavior.
 
-Interceptors works with Go 1.0 and higher.
+interceptor works with Go 1.0 and higher.
 
 ### Contributing
 

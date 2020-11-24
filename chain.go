@@ -1,9 +1,9 @@
-// Package interceptors provides a convenient way to chain http handlers.
-package interceptors
+// Package interceptor provides a convenient way to chain http handlers.
+package interceptor
 
 import "net/http"
 
-// A constructor for a piece of middleware.
+// Constructor for a piece of middleware.
 // Some middleware use this constructor out of the box,
 // so in most cases you can just pass somepackage.New
 type Constructor func(http.Handler) http.Handler
